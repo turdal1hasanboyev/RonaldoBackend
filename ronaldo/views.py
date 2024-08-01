@@ -6,8 +6,10 @@ from ronaldo.models import User, Category, Comment, Company, Education, Experien
 def home(request):
     cat = request.GET.get('cat')
     tag = request.GET.get('tag')
-    
+
+    admin = SiteAdminisration.objects.get(id=1)
     user = User.objects.get(id=1)
+
     companies = Company.objects.all().order_by('-id')[:5]
     educations = Education.objects.all().order_by('id')[:4]
     experiences = Experience.objects.all().order_by('-id')[:6]
@@ -16,7 +18,6 @@ def home(request):
     services = Services.objects.all().order_by('id')[:6]
     blogs = Blog.objects.all().order_by('-id')[:3]
     our_projects = OurProjects.objects.all().order_by('-id')[:6]
-    admin = SiteAdminisration.objects.get(id=1)
 
     if request.method == "POST":
         name = request.POST.get("name")
@@ -52,7 +53,9 @@ def home2(request):
     cat = request.GET.get('cat')
     tag = request.GET.get('tag')
 
+    admin = SiteAdminisration.objects.get(id=1)
     user = User.objects.get(id=1)
+
     companies = Company.objects.all().order_by('-id')[:5]
     educations = Education.objects.all().order_by('id')[:4]
     experiences = Experience.objects.all().order_by('-id')[:6]
@@ -61,7 +64,6 @@ def home2(request):
     services = Services.objects.all().order_by('id')[:6]
     blogs = Blog.objects.all().order_by('-id')[:3]
     our_projects = OurProjects.objects.all().order_by('-id')[:6]
-    admin = SiteAdminisration.objects.get(id=1)
 
     if request.method == "POST":
         name = request.POST.get("name")
