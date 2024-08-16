@@ -33,7 +33,7 @@ class GetInTouchAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'blog', 'email', 'website']
+    list_display = ['id', 'name', 'blog', 'email', 'web_site']
 
 
 @admin.register(SiteAdminisration)

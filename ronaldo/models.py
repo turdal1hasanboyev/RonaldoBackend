@@ -11,7 +11,6 @@ from django.urls import reverse
 
 
 class BaseModel(models.Model):
-    is_active = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -33,7 +32,7 @@ class User(BaseModel, AbstractUser):
     
 
 class Company(BaseModel):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
     image = models.ImageField(upload_to='CompanyIimage/', null=True, blank=True)
 
     def __str__(self) -> str:
@@ -41,7 +40,7 @@ class Company(BaseModel):
     
 
 class Education(BaseModel):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     direction = models.CharField(max_length=225, null=True, blank=True)
     date = models.CharField(max_length=225, null=True, blank=True)
@@ -51,7 +50,7 @@ class Education(BaseModel):
     
 
 class Experience(BaseModel):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     education = models.CharField(max_length=225, null=True, blank=True)
     date = models.CharField(max_length=225, null=True, blank=True)
@@ -61,7 +60,7 @@ class Experience(BaseModel):
 
 
 class Awards(BaseModel):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     date = models.CharField(max_length=225, null=True, blank=True)
     image = models.ImageField(upload_to='AwardImage/', null=True, blank=True)
@@ -72,7 +71,7 @@ class Awards(BaseModel):
     
 
 class Skills(BaseModel):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
     percentage = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self) -> str:
@@ -80,7 +79,7 @@ class Skills(BaseModel):
     
 
 class Services(BaseModel):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     image = models.ImageField(upload_to='ServiceImage/', null=True, blank=True)
 
@@ -89,7 +88,7 @@ class Services(BaseModel):
     
 
 class OurProjects(BaseModel):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
     image = models.ImageField(upload_to='ProjectImage/', null=True, blank=True)
     service = models.ForeignKey(Services, on_delete=models.CASCADE, null=True, blank=True)
 
@@ -98,18 +97,18 @@ class OurProjects(BaseModel):
     
 
 class SiteAdminisration(BaseModel):
-    awards = models.IntegerField(default=0)
-    projects = models.IntegerField(default=0)
-    happy_customers = models.IntegerField(default=0)
-    cups_of_cofee = models.IntegerField(default=0)
+    awards = models.IntegerField(default=0, null=True, blank=True)
+    projects = models.IntegerField(default=0, null=True, blank=True)
+    happy_customers = models.IntegerField(default=0, null=True, blank=True)
+    cups_of_cofee = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.awards}"
     
 
 class GetInTouch(BaseModel):
-    name = models.CharField(max_length=225)
-    email = models.EmailField(max_length=225, null=True, blank=True)
+    name = models.CharField(max_length=225, null=True, blank=True)
+    email = models.EmailField(max_length=225, null=True, blank=True, unique=True)
     message = RichTextField(null=True, blank=True)
     subject = models.CharField(max_length=225, null=True, blank=True)
 
@@ -119,7 +118,7 @@ class GetInTouch(BaseModel):
 
 class Category(BaseModel):
     slug = models.SlugField(unique=True, max_length=225, null=True, blank=True)
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
 
     def save(self, *args, **kwargs):  
         if not self.slug:
@@ -133,7 +132,7 @@ class Category(BaseModel):
 
 class Tag(BaseModel):
     slug = models.SlugField(unique=True, max_length=225, null=True, blank=True)
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
 
     def save(self, *args, **kwargs):  
         if not self.slug:
@@ -146,10 +145,10 @@ class Tag(BaseModel):
     
 
 class Blog(BaseModel):
-    name = models.CharField(max_length=225)
+    name = models.CharField(max_length=225, null=True, blank=True)
     slug = models.SlugField(unique=True, max_length=225, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='blog_category', null=True, blank=True)
-    tags = models.ManyToManyField(Tag, blank=True, related_name='blog_tags')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
     image = models.ImageField(upload_to='Blogs/', null=True, blank=True)
     description = RichTextField(null=True, blank=True)
     description_2 = RichTextField(null=True, blank=True)
@@ -166,11 +165,11 @@ class Blog(BaseModel):
 
 class Comment(BaseModel):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    name = models.CharField(max_length=225)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=225, null=True, blank=True)
     email = models.EmailField(max_length=225, null=True, blank=True)
     message = RichTextField(null=True, blank=True)
-    website = models.URLField(null=True, blank=True)
+    web_site = models.URLField(null=True, blank=True, unique=True)
 
     def __str__(self) -> str:
         return self.name

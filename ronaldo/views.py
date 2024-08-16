@@ -10,14 +10,14 @@ def home(request):
     admin = SiteAdminisration.objects.get(id=1)
     user = User.objects.get(id=1)
 
-    companies = Company.objects.all().order_by('-id')[:5]
-    educations = Education.objects.all().order_by('id')[:4]
-    experiences = Experience.objects.all().order_by('-id')[:6]
-    awards = Awards.objects.all().order_by('id')[:5]
-    skills = Skills.objects.all().order_by('-id')[:6]
-    services = Services.objects.all().order_by('id')[:6]
-    blogs = Blog.objects.all().order_by('-id')[:3]
-    our_projects = OurProjects.objects.all().order_by('-id')[:6]
+    companies = Company.objects.all()
+    educations = Education.objects.all()
+    experiences = Experience.objects.all()
+    awards = Awards.objects.all()
+    skills = Skills.objects.all()
+    services = Services.objects.all()
+    blogs = Blog.objects.all()
+    our_projects = OurProjects.objects.all()
 
     if request.method == "POST":
         name = request.POST.get("name")
@@ -36,14 +36,14 @@ def home(request):
     
     context = {
         'user': user,
-        'companies': companies,
-        'educations': educations,
-        'experiences': experiences,
-        'awards': awards,
-        'skills': skills,
-        'services': services,
-        'blogs': blogs,
-        'our_projects': our_projects,
+        'companies': companies.order_by('-id')[:5],
+        'educations': educations.order_by('id')[:4],
+        'experiences': experiences.order_by('-id')[:6],
+        'awards': awards.order_by('id')[:5],
+        'skills': skills.order_by('-id')[:6],
+        'services': services.order_by('id')[:6],
+        'blogs': blogs.order_by('-id')[:3],
+        'our_projects': our_projects.order_by('-id')[:6],
         'admin': admin,
     }
 
@@ -56,14 +56,14 @@ def home2(request):
     admin = SiteAdminisration.objects.get(id=1)
     user = User.objects.get(id=1)
 
-    companies = Company.objects.all().order_by('-id')[:5]
-    educations = Education.objects.all().order_by('id')[:4]
-    experiences = Experience.objects.all().order_by('-id')[:6]
-    awards = Awards.objects.all().order_by('id')[:5]
-    skills = Skills.objects.all().order_by('-id')[:6]
-    services = Services.objects.all().order_by('id')[:6]
-    blogs = Blog.objects.all().order_by('-id')[:3]
-    our_projects = OurProjects.objects.all().order_by('-id')[:6]
+    companies = Company.objects.all()
+    educations = Education.objects.all()
+    experiences = Experience.objects.all()
+    awards = Awards.objects.all()
+    skills = Skills.objects.all()
+    services = Services.objects.all()
+    blogs = Blog.objects.all()
+    our_projects = OurProjects.objects.all()
 
     if request.method == "POST":
         name = request.POST.get("name")
@@ -82,14 +82,14 @@ def home2(request):
     
     context = {
         'user': user,
-        'companies': companies,
-        'educations': educations,
-        'experiences': experiences,
-        'awards': awards,
-        'skills': skills,
-        'services': services,
-        'blogs': blogs,
-        'our_projects': our_projects,
+        'companies': companies.order_by('-id')[:5],
+        'educations': educations.order_by('id')[:4],
+        'experiences': experiences.order_by('-id')[:6],
+        'awards': awards.order_by('id')[:5],
+        'skills': skills.order_by('-id')[:6],
+        'services': services.order_by('id')[:6],
+        'blogs': blogs.order_by('-id')[:3],
+        'our_projects': our_projects.order_by('-id')[:6],
         'admin': admin,
     }
 
@@ -99,35 +99,36 @@ def single(request, slug):
     cat = request.GET.get('cat')
     tag = request.GET.get('tag')
 
-    tags = Tag.objects.all().order_by('name')
-    categories = Category.objects.all().order_by('name')
-    recent_blogs = Blog.objects.all().order_by('-id')[:3]
+    tags = Tag.objects.all()
+    categories = Category.objects.all()
+    recent_blogs = Blog.objects.all()
 
     blog = Blog.objects.get(slug__iexact=slug)
+
     comments = Comment.objects.filter(blog_id=blog.id)
 
     if request.method == "POST":   
         name = request.POST.get("name")
         email = request.POST.get("email")
         comment = request.POST.get("comment")
-        website = request.POST.get("website")
+        web_site = request.POST.get("website")
 
         Comment.objects.create(
             blog_id=blog.id,
-            user=request.user,
+            user_id=request.user.id,
             name=name,
             email=email,
             comment=comment,
-            website=website,
+            web_site=web_site,
         )
 
         return redirect('single', blog.slug)
     
     context = {
         'blog': blog,
-        'tags': tags,
-        'categories': categories,
-        'recent_blogs': recent_blogs,
+        'tags': tags.order_by('name'),
+        'categories': categories.order_by('name'),
+        'recent_blogs': recent_blogs.order_by('-id')[:3],
         'comments': comments,
         }
     
