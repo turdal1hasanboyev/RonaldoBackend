@@ -27,7 +27,7 @@ class User(BaseModel, AbstractUser):
     avatar = models.ImageField(upload_to='Avatar/', null=True, blank=True)
     complated_project = models.IntegerField(default=0, null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.username
     
 
@@ -35,7 +35,7 @@ class Company(BaseModel):
     name = models.CharField(max_length=225, null=True, blank=True)
     image = models.ImageField(upload_to='CompanyIimage/', null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -45,7 +45,7 @@ class Education(BaseModel):
     direction = models.CharField(max_length=225, null=True, blank=True)
     date = models.CharField(max_length=225, null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -55,7 +55,7 @@ class Experience(BaseModel):
     education = models.CharField(max_length=225, null=True, blank=True)
     date = models.CharField(max_length=225, null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 
@@ -66,7 +66,7 @@ class Awards(BaseModel):
     image = models.ImageField(upload_to='AwardImage/', null=True, blank=True)
     education = models.CharField(max_length=225, null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -74,7 +74,7 @@ class Skills(BaseModel):
     name = models.CharField(max_length=225, null=True, blank=True)
     percentage = models.IntegerField(default=0, null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -83,7 +83,7 @@ class Services(BaseModel):
     description = RichTextField(null=True, blank=True)
     image = models.ImageField(upload_to='ServiceImage/', null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -92,7 +92,7 @@ class OurProjects(BaseModel):
     image = models.ImageField(upload_to='ProjectImage/', null=True, blank=True)
     service = models.ForeignKey(Services, on_delete=models.CASCADE, null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -102,7 +102,7 @@ class SiteAdminisration(BaseModel):
     happy_customers = models.IntegerField(default=0, null=True, blank=True)
     cups_of_cofee = models.IntegerField(default=0, null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return f"{self.awards}"
     
 
@@ -112,7 +112,7 @@ class GetInTouch(BaseModel):
     message = RichTextField(null=True, blank=True)
     subject = models.CharField(max_length=225, null=True, blank=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -126,7 +126,7 @@ class Category(BaseModel):
 
         return super().save(*args, **kwargs)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -140,7 +140,7 @@ class Tag(BaseModel):
 
         return super().save(*args, **kwargs)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     
 
@@ -159,7 +159,13 @@ class Blog(BaseModel):
     def get_absolute_url(self):
         return reverse("single", kwargs={"slug": self.slug})
     
-    def __str__(self) -> str:
+    def save(self, *args, **kwargs):  
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        return super().save(*args, **kwargs)
+    
+    def __str__(self):
         return self.name
     
 
@@ -171,6 +177,6 @@ class Comment(BaseModel):
     message = RichTextField(null=True, blank=True)
     web_site = models.URLField(null=True, blank=True, unique=True)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
     

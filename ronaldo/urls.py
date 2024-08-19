@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ronaldo.views import home, home2, single
+from .views import home, home2, single
 
 
 urlpatterns = [

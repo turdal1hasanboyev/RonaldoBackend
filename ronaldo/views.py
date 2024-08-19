@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from ronaldo.models import User, Category, Comment, Company, Education, Experience, Awards, Skills, Services, Blog, OurProjects, SiteAdminisration, GetInTouch, Tag
+from .models import User, Category, Comment, Company, Education, Experience, Awards, Skills, Services, Blog, OurProjects, SiteAdminisration, GetInTouch, Tag
 
 
 def home(request):

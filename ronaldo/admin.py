@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from ronaldo.models import User, Comment, Category, Company, Awards, Services, SiteAdminisration, Skills, Blog, Education, Experience, GetInTouch, OurProjects, Tag
+from .models import User, Comment, Category, Company, Awards, Services, SiteAdminisration, Skills, Blog, Education, Experience, GetInTouch, OurProjects, Tag
 
 
 @admin.register(Blog)
